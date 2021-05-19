@@ -1,6 +1,6 @@
 import { UserCredentials } from '../interfaces/auth.service';
 import { User } from '../interfaces/users.service';
-import UsersModel from '../models/users'
+import UsersModel from '../models/users';
 
 export default class UserService {
     // get all Users
@@ -24,6 +24,17 @@ export default class UserService {
         } catch(error) { // connect to database faild and then the promise rejected
             // return rejection
             return error
+        }
+    }
+    // get user by id
+    async getUsrById(_id: string): Promise<User | undefined>{
+        console.log(_id)
+        try {
+            const allUsers = await UsersModel.find();
+            const user = allUsers.filter(user => user._id === _id);
+            return user[0]
+        } catch(err) {
+            return err
         }
     }
 }

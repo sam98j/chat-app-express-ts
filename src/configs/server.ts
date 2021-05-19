@@ -4,6 +4,7 @@ import mainRouter from "../routes/main";
 import mongoose from 'mongoose'
 import authRouter from "../routes/auth";
 import usersRouter from "../routes/users";
+import dataRouter from "../routes/data";
 
 export default class ServerConfigs {
     // express app
@@ -23,10 +24,11 @@ export default class ServerConfigs {
         this.app.use('/', mainRouter)
         this.app.use('/auth', authRouter)
         this.app.use('/users', usersRouter)
+        this.app.use('/data', dataRouter)
     }
     // config database
     async configDataBase(){
-        const db = await mongoose.connect('mongodb+srv://sam98j:sam98j@cluster0.whpnc.mongodb.net/chat?retryWrites=true&w=majority', {
+        const db = await mongoose.connect('mongodb://localhost/chat', {
             useNewUrlParser: true, useUnifiedTopology: true
         }, () => console.log('database connected'));
     }
