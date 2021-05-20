@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.redirect('http://localhost:3000/')
+    res.status(200).send({msg: "Hello word"})
 })
 
 const mainRouter = router;
