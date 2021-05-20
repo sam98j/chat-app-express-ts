@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "./dist/bootstrap.js",
+  "types": "./src/types",
   "scripts": {
     "dev": "nodemon",
     "build": "tsc --build"
