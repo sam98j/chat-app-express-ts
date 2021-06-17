@@ -13,7 +13,7 @@ export default class AuthService {
         // 
         return new Promise((resolve, reject) => {
             if(token) {
-                JWT.verify(token, 'TOKEN_KEY_ACCESS_SECRET', (err: any, user: any) => {
+                JWT.verify(token, process.env.TOKEN_SECRET!, (err: any, user: any) => {
                     // that's mean the token is not valid
                     if(err) {
                         const res = {
@@ -40,12 +40,12 @@ export default class AuthService {
         try {
             const user = await findUser(credentials);
             // check if user is exitst
-            if(user !== undefined) {
-                const {username} = user;
+            if(user !== null) {
+                const {username, _id} = user;
                 // generate token for that user
-                const token = JWT.sign({username}, 'TOKEN_KEY_ACCESS_SECRET');
+                const token = JWT.sign({_id}, process.env.TOKEN_SECRET!);
                 // response obj
-                const res = {username, token};
+                const res = {username, token, _id};
                 return res
             } else { // user dosn't exist
                 return false

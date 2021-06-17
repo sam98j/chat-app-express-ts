@@ -7,8 +7,8 @@ export default class AuthMiddleware {
     // 
     async verifyUser(req: Request, res: Response, next: NextFunction){
         try {
-            const {username} = await verifyToken(req.headers.authorization);
-            req.currentUser = {username};
+            const {_id} = await verifyToken(req.headers.authorization);
+            req.currentUser = {_id};
             next()
         } catch(error) {
             res.status(400).send(error)

@@ -4,35 +4,44 @@ import UsersModel from '../models/users';
 
 export default class UserService {
     // get all Users
-    async getUsers(): Promise<User[]>{
+    async getUsers(cUser_id: string): Promise<User[]>{
         // waitng for db to get all users
+        console.log(cUser_id)
         try {
-            const users = await UsersModel.find({});
+            const all_users = await UsersModel.find({});
+            const users = all_users.filter((user) => cUser_id !== user.id);
             return users
         } catch(err) {
             return err
         }
     }
     // find User
-    async findUser(credentials: UserCredentials): Promise<User | undefined>{
+    async findUser(credentials: UserCredentials): Promise<User | null>{
         // try to resolve promise from db
         try {
             // get the user form db
-            const users = await UsersModel.find(credentials);
+            const user = await UsersModel.findOne(credentials);
             // return the user;
-            return users[0] 
+            return user
         } catch(error) { // connect to database faild and then the promise rejected
             // return rejection
             return error
         }
     }
     // get user by id
-    async getUsrById(_id: string): Promise<User | undefined>{
-        console.log(_id)
+    async getUsrById(_id: string): Promise<User | null>{
         try {
-            const allUsers = await UsersModel.find();
-            const user = allUsers.filter(user => user._id === _id);
-            return user[0]
+            const user = await UsersModel.findOne({_id});
+            return user
+        } catch(err) {
+            return err
+        }
+    }
+    // update current user socket_id
+    async updateSocketId(user_id: string, socket_id: string): Promise<true>{
+        try {
+            await UsersModel.updateOne({_id: user_id}, {$set: {socket_id: socket_id}});
+            return true
         } catch(err) {
             return err
         }

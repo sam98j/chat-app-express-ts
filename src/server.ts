@@ -26,7 +26,11 @@ export default class Server {
         // server
         this.server = http.createServer(this.app);
         // socket 
-        this.io = new SocketServer(this.server)
+        this.io = new SocketServer(this.server, {
+            cors: {
+                origin: "*"
+            },
+        })
     }
     // application run method
     run(){
@@ -35,7 +39,8 @@ export default class Server {
         // config database
         this.configs.configDataBase()
         // config routes
-        this.configs.configRoutes()
+        this.configs.configRoutes();
+        // socket connection
         Socket_IO(this.io)
         // app is listening
         this.server.listen(this.port, () => console.log(`app is running on port ${this.port}`))

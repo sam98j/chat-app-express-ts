@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 import authRouter from "../routes/auth";
 import usersRouter from "../routes/users";
 import dataRouter from "../routes/data";
+import dotenv from 'dotenv'
 
 export default class ServerConfigs {
     // express app
@@ -15,6 +16,7 @@ export default class ServerConfigs {
     }
     // config middleware
     configMidlleware(){
+        dotenv.config()
         // make routes accesable for every origin
         this.app.use(cors())
         this.app.use(express.json())

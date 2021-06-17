@@ -1,11 +1,12 @@
 import mongoose from 'mongoose';
+import { User } from '../interfaces/users.service';
 // create User Schema
 const UserSchema = new mongoose.Schema({
-    _id: String,
     username: String,
-    password: String
+    password: String,
+    socket_id: String
 })
 // 
-const UsersModel: mongoose.Model<any> = mongoose.model('users', UserSchema);
+const UsersModel: mongoose.Model<User> = mongoose.model('users', UserSchema);
 // export model
 export default UsersModel
