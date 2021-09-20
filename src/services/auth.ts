@@ -45,7 +45,7 @@ export default class AuthService {
                 // generate token for that user
                 const token = JWT.sign({_id}, process.env.TOKEN_SECRET!);
                 // response obj
-                const res = {username, token, _id};
+                const res = {user: {username, _id}, token};
                 return res
             } else { // user dosn't exist
                 return false

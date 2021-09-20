@@ -3,5 +3,5 @@ import Server from "./server";
 const port = 5000;
 // app instance
 const app = new Server(port);
-// run the app
+// run the appm
 app.run()

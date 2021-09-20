@@ -1,22 +1,19 @@
-import { Request, Response } from "express";
+import { Request, Response,  } from "express";
+import { getPchatDataBody, pChatDataRes } from "../interfaces/pChat";
+import MessageService from "../services/messages";
 import UserService from "../services/users";
 const {getUsrById} = new UserService()
 
-interface getPchatDataBody {
-    recUserId: string
-}
-
-interface pChatDataRes {
-    recId: string;
-    avatar: string;
-    username: string,
-    messages: []
-}
 
 export default class DataController {
+    private static messages_service = new MessageService()
     // private chat data handler
     async pChatDataHandler(req: Request, res: Response){
+        // query params
         const {recUserId} = req.body as getPchatDataBody;
+        // current User _id
+        const {_id} = req.currentUser;
+        // const {recUserId} = req.query.foo;
         // if an issue in recUserId
         if(recUserId === undefined || recUserId === "") {
             res.status(400).end()
@@ -24,12 +21,10 @@ export default class DataController {
         // get reciver data
         try {
             const recUser = await getUsrById(recUserId);
-            if(recUser) {
+            const messages = await DataController.messages_service.getMessages({cUser: _id, chatting_with: recUserId})
+            if(recUser && messages !== false) {
                 const resObj: pChatDataRes = {
-                    recId: recUser._id,
-                    avatar: "",
-                    username: recUser.username,
-                    messages: []
+                    messages: [...messages]
                 }
                 // send data to the client
                 res.status(200).send(resObj)

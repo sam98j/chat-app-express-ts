@@ -1,14 +1,15 @@
 import { UserCredentials } from '../interfaces/auth.service';
 import { User } from '../interfaces/users.service';
 import UsersModel from '../models/users';
+import moment from 'moment';
 
 export default class UserService {
     // get all Users
     async getUsers(cUser_id: string): Promise<User[]>{
         // waitng for db to get all users
-        console.log(cUser_id)
         try {
             const all_users = await UsersModel.find({});
+            // get all users 
             const users = all_users.filter((user) => cUser_id !== user.id);
             return users
         } catch(err) {
@@ -45,5 +46,21 @@ export default class UserService {
         } catch(err) {
             return err
         }
+    }
+    // set the user online
+    async setOnline(data: {cUser_id: string, online: boolean}): Promise<true>{
+        const {cUser_id, online} = data;
+        try {
+            await UsersModel.updateOne({_id: cUser_id}, {$set: {online: online}});
+            return true
+        } catch(err) {return err}
+    }
+    // set the user last seen
+    async setLastSeen(cUser_id: string): Promise<true>{
+        const last_seen_date = moment().format();
+        try {
+            await UsersModel.updateOne({_id: cUser_id}, {$set: {last_seen: last_seen_date}});
+            return true
+        } catch(err) {return err}
     }
 }

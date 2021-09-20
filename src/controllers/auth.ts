@@ -24,8 +24,8 @@ export default class AuthController {
             const user = await AuthController.user_service.getUsrById(req.currentUser._id!);
             // check if user is exit
             if(user !== null) {
-                const {id, username} = user;
-                res.status(200).send({id, username});
+                const {_id, username} = user;
+                res.status(200).send({_id, username});
                 return
             }
             res.status(401).send({err: "not authrized"})

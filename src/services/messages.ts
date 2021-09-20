@@ -21,4 +21,18 @@ export default class MessageService {
             return err
         }
     }
+    // get messages related to the user chatting with
+    async getMessages(data: {chatting_with: string, cUser: string}): Promise<false | Message[] >{
+        const {cUser, chatting_with} = data
+        // check if paramter is not undefined
+        if(chatting_with === undefined || cUser === '') {
+            return false
+        }
+        // try to get the data
+        try {
+            // get filtered messages
+            const messages = await MessagesModel.find({$or: [{$and: [{reciver: cUser}, {sender: chatting_with}]}, {$and: [{sender: cUser}, {reciver: chatting_with}]}]})
+            return messages
+        } catch(err){return err}
+    }
 }

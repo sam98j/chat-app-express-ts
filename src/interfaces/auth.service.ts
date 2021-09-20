@@ -5,5 +5,8 @@ export interface UserCredentials {
 // login success
 export interface LoginSuccess {
     token: string;
-    username: string
+    user: {
+        username: string,
+        _id: string
+    }
 }
